@@ -19,7 +19,7 @@
 
             <form action="" method="" id="new-task-form">
                 <input type="text" name="task-title" id="task-title" placeholder="Insira aqui o título da tarefa" required>
-                <textarea name="task-description" id="task-description" placeholder="Insira aqui a descrição da tarefa" required></textarea>
+                <textarea name="task-description" id="task-description" placeholder="Insira aqui a descrição da tarefa"></textarea>
                 <button type="submit">Adicionar</button>
             </form>
         </section>
@@ -27,13 +27,8 @@
         <section class="task-list" aria-labelledby="new-task-heading">
             <h2 id="task-list-heading">Lista de Tarefas</h2>
             
-            <div class="tasks-container">
-                <div class="task">
-                    <span class="status-icon">✔</span>
-                    <span class="task-title">Estudar JavaScript</span>
-                    <button class="btn-complete">✔ Concluir</button>
-                    <button class="btn-delete">🗑 Deletar</button>
-                </div>
+            <div id="tasks-container">
+                
             </div>
         </section>
     </main>
