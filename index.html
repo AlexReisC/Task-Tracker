@@ -7,23 +7,41 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Task Tracker</h1>
-    <p>Bem-vindo ao Task Tracker! Gerencie suas tarefas de forma eficiente.</p>
-    <script src="index.js"></script>
+    
+    <header>
+        <h1>Task Tracker</h1>
+        <p>Bem-vindo ao Task Tracker! Gerencie suas tarefas de forma eficiente.</p>
+    </header>
+    
+    <main>
+        <section class="task-form" aria-labelledby="new-task-heading">
+            <h2 id="new-task-heading">Nova Tarefa</h2>
 
-    <form action="" method="">
-        <input type="text" name="input-task" id="" placeholder="Insira a nova tarefa">
-        <button onclick="">Adicionar</button>
-    </form>
-
-    <ul>
-        <li>
-
-        </li>
-    </ul>
-
+            <form action="" method="" id="new-task-form">
+                <input type="text" name="task-title" id="task-title" placeholder="Insira aqui o título da tarefa" required>
+                <textarea name="task-description" id="task-description" placeholder="Insira aqui a descrição da tarefa" required></textarea>
+                <button type="submit">Adicionar</button>
+            </form>
+        </section>
+        
+        <section class="task-list" aria-labelledby="new-task-heading">
+            <h2 id="task-list-heading">Lista de Tarefas</h2>
+            
+            <div class="tasks-container">
+                <div class="task">
+                    <span class="status-icon">✔</span>
+                    <span class="task-title">Estudar JavaScript</span>
+                    <button class="btn-complete">✔ Concluir</button>
+                    <button class="btn-delete">🗑 Deletar</button>
+                </div>
+            </div>
+        </section>
+    </main>
+    
     <footer>
         <p>Task Tracker 2025. Feito por Alex Reis.</p>
     </footer>
+    
+    <script src="index.js"></script>
 </body>
 </html>
