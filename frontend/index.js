@@ -1,4 +1,5 @@
 const form = document.getElementById("new-task-form");
+const tasksContainer = document.querySelector("#tasks-container");
 
 form.addEventListener("submit", (ev) => {
     ev.preventDefault();
@@ -41,6 +42,18 @@ form.addEventListener("submit", (ev) => {
 
     titleInput.value = "";
     descriptionInput.value = "";
+});
+
+tasksContainer.addEventListener("click", (ev) => {
+    if (ev.target.classList.contains("btn-complete")) {
+        const task = ev.target.closest(".task");
+        task.classList.toggle("done");
+        ev.target.textContent = task.classList.contains("done") ? "Desfazer" : "Concluir";
+    }
+    if (ev.target.classList.contains("btn-delete")) {
+        const task = ev.target.closest(".task");
+        task.remove();
+    }
 });
 
 // mudar classe task para task done se a tarefa for concluida
