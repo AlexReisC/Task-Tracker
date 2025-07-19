@@ -50,19 +50,18 @@ tasksContainer.addEventListener("click", (ev) => {
     }
 
     if (ev.target.classList.contains("task-title")) {
-        const taskDescription = document.querySelector(".task-description");
-        if (taskDescription) {
-            taskDescription.remove(); 
+        const span = ev.target;
+        const divTask = span.closest(".task");
+        const existingDescription = divTask.querySelector(".task-description");
+        
+        if (existingDescription) {
+            existingDescription.remove(); 
             return;
         }
 
-        const span = ev.target;
-        const divTask = span.closest(".task");
-        
         const description = document.createElement("p");
         description.classList.add("task-description");
         description.textContent = span.title;
-
         divTask.appendChild(description);
     }
 });
