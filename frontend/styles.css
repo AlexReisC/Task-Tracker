@@ -1,5 +1,30 @@
 @import url('https://fonts.googleapis.com/css2?family=Intel+One+Mono:ital,wght@0,300..700;1,300..700&display=swap');
 
+:root {
+    /* Cores principais */
+    --primary-color: #1e88e5;
+    --primary-hover: #1565c0;
+
+    --complete-color: #43a047;
+    --complete-hover: #2e7d32;
+
+    --edit-color: #e9e90a;
+    --edit-hover: #d1d111;
+
+    --delete-color: #e53935;
+    --delete-hover: #b71c1c;
+
+    --task-bg: #ffffff;
+    --task-border: #ccc;
+    --description-text: #555;
+
+    /* Estilo geral */
+    --border-radius: 8px;
+    --font-family: "Intel One Mono", monospace;
+    --shadow-light: 0 0 6px rgba(0, 0, 0, 0.05);
+    --shadow-medium: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
 * {
     padding: 0;
     margin: 0;
@@ -13,7 +38,7 @@ body {
     justify-content: center;
     min-height: 100vh;
     gap: 40px;
-    font-family: "Intel One Mono", monospace;
+    font-family: var(--font-family);
     font-optical-sizing: auto;
     font-weight: normal;
     font-style: normal;
@@ -39,14 +64,14 @@ main {
     gap: 10px;
     background-color: #f2f2f2;
     padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-medium);
 }
 
 #new-task-form input {
     padding: 8px;
     border-radius: 4px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--task-border);
 }
 
 #new-task-form textarea {
@@ -55,8 +80,8 @@ main {
 }
 
 #new-task-form button {
-    background-color: #1e88e5;
-    color: white;
+    background-color: var(--primary-color);
+    color: var(--task-bg);
     border: none;
     border-radius: 4px;
     padding: 8px 12px;
@@ -65,7 +90,7 @@ main {
 }
 
 #new-task-form button:hover {
-    background-color: #1565c0;
+    background-color: var(--primary-hover);
 }
 
 .task {
@@ -75,10 +100,10 @@ main {
     gap: 10px;
     padding: 10px;
     margin-bottom: 10px;
-    background-color: #ffffff;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 0 6px rgba(0,0,0,0.05);
+    background-color: var(--task-bg);
+    border: 1px solid var(--task-border);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-light);
     transition: transform 0.2s ease;
     flex-wrap: wrap;
 }
@@ -90,6 +115,7 @@ main {
 .task .task-title {
     flex: 1;
     text-align: left;
+    cursor: pointer;
 }
 
 .task.done .task-title {
@@ -106,35 +132,39 @@ main {
 }
 
 .task .btn-complete {
-    background-color: #43a047;
-    color: white;
+    background-color: var(--complete-color);
+    color: var(--task-bg);
 }
 
 .task .btn-complete:hover {
-    background-color: #2e7d32;
+    background-color: var(--complete-hover);
 }
 
 .task .btn-edit {
-    background-color: rgb(233, 233, 10);
-    color: white;
+    background-color: var(--edit-color);
+    color: var(--task-bg);
 }
 
 .task .btn-edit:hover {
-    background-color: rgb(218, 218, 17);;
+    background-color: var(--edit-hover);
 }
 
 .task .btn-delete {
-    background-color: #e53935;
-    color: white;
+    background-color: var(--delete-color);
+    color: var(--task-bg);
 }
 
 .task .btn-delete:hover {
-    background-color: #b71c1c;
+    background-color: var(--delete-hover);
 }
 
 .task .task-description {
     text-align: left;
-    width: 700px;
+    width: 100%;
+    margin-top: 5px;
+    color: var(--description-text);
+    font-size: 0.9rem;
+    transition: transform 0.5s ease;
 }
 
 footer {
