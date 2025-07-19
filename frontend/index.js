@@ -48,6 +48,23 @@ tasksContainer.addEventListener("click", (ev) => {
             btn.textContent = "Salvar";
         }
     }
+
+    if (ev.target.classList.contains("task-title")) {
+        const taskDescription = document.querySelector(".task-description");
+        if (taskDescription) {
+            taskDescription.remove(); 
+            return;
+        }
+
+        const span = ev.target;
+        const divTask = span.closest(".task");
+        
+        const description = document.createElement("p");
+        description.classList.add("task-description");
+        description.textContent = span.title;
+
+        divTask.appendChild(description);
+    }
 });
 
 function createTask(title, description) {

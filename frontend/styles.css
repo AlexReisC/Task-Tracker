@@ -80,6 +80,7 @@ main {
     border-radius: 8px;
     box-shadow: 0 0 6px rgba(0,0,0,0.05);
     transition: transform 0.2s ease;
+    flex-wrap: wrap;
 }
 
 .task:hover {
@@ -129,6 +130,11 @@ main {
 
 .task .btn-delete:hover {
     background-color: #b71c1c;
+}
+
+.task .task-description {
+    text-align: left;
+    width: 700px;
 }
 
 footer {
