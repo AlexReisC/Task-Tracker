@@ -16,19 +16,12 @@ form.addEventListener("submit", (ev) => {
 });
 
 tasksContainer.addEventListener("click", (ev) => {
-    if (ev.target.classList.contains("btn-complete")) {
-        const task = ev.target.closest(".task");
-        task.classList.toggle("done");
-        ev.target.textContent = task.classList.contains("done") ? "Desfazer" : "Concluir";
-    }
-    if (ev.target.classList.contains("btn-delete")) {
-        const task = ev.target.closest(".task");
-        task.remove();
-    }
+    changeStatus(ev);
+    
     if (ev.target.classList.contains("btn-edit")) {
-        const btn = ev.target;
-        
+        const btn = ev.target; 
         const task = btn.closest(".task");
+        
         if (task.classList.contains("done")) return;
         
         const isEditing = btn.textContent === "Salvar";
@@ -36,7 +29,7 @@ tasksContainer.addEventListener("click", (ev) => {
             const input = task.querySelector(".edit-title");
             const newTitle = input.value.trim();
 
-            if (innput & newTitle !== "") {
+            if (input && newTitle !== "") {
                 const span = document.createElement("span");
                 span.classList.add("task-title");
                 span.textContent = newTitle;
@@ -89,4 +82,19 @@ function createTask(title, description) {
     description.value = "";
 
     return task;
+}
+
+function changeStatus(event) {
+    if (event.target.classList.contains("btn-complete")) {
+        const task = event.target.closest(".task");
+        task.classList.toggle("done");
+        event.target.textContent = task.classList.contains("done") ? "Desfazer" : "Concluir";
+    }
+    
+    if (event.target.classList.contains("btn-delete")) {
+        const task = event.target.closest(".task");
+        task.remove();
+    }
+    
+    return;
 }
