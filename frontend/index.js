@@ -54,6 +54,34 @@ tasksContainer.addEventListener("click", (ev) => {
         const task = ev.target.closest(".task");
         task.remove();
     }
-});
+    if (ev.target.classList.contains("btn-edit")) {
+        const btn = ev.target;
+        
+        const task = btn.closest(".task");
+        if (task.classList.contains("done")) return;
+        
+        const isEditing = btn.textContent === "Salvar";
+        if (isEditing) {
+            const input = task.querySelector(".edit-title");
+            const newTitle = input.value.trim();
 
-// mudar classe task para task done se a tarefa for concluida
+            if (innput & newTitle !== "") {
+                const span = document.createElement("span");
+                span.classList.add("task-title");
+                span.textContent = newTitle;
+                task.replaceChild(span, input);
+            }
+            btn.textContent = "Editar";
+        } else {
+            const span = task.querySelector(".task-title");
+
+            const input = document.createElement("input");
+            input.classList.add("edit-title");
+            input.type = "text";
+            input.value = span.textContent;
+
+            task.replaceChild(input, span);
+            btn.textContent = "Salvar";
+        }
+    }
+});
