@@ -63,8 +63,8 @@ function createTask(title, description) {
     
     const spanTitle = document.createElement("span");
     spanTitle.classList.add("task-title");
-    spanTitle.textContent = titleInput.value;
-    spanTitle.title = descriptionInput.value;
+    spanTitle.textContent = title.value;
+    spanTitle.title = description.value;
     task.appendChild(spanTitle);
     
     const completeBtn = document.createElement("button");
@@ -85,8 +85,8 @@ function createTask(title, description) {
     const container = document.getElementById("tasks-container");
     container.appendChild(task);
 
-    titleInput.value = "";
-    descriptionInput.value = "";
+    title.value = "";
+    description.value = "";
 
     return task;
 }
