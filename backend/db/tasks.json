@@ -1,20 +1,8 @@
 [
   {
-    "id": "1",
-    "title": "Task 1",
+    "id": "cbdf0e33-e840-4f5e-8787-4ac30540b95d",
+    "title": "Task",
     "description": "example",
     "done": false
-  },
-  {
-    "id": "2",
-    "title": "Task 2",
-    "description": "example",
-    "done": true
-  },
-  {
-    "id": "3",
-    "title": "Task 3",
-    "description": "example",
-    "done": true
   }
 ]
