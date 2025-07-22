@@ -15,112 +15,120 @@ form.addEventListener("submit", (ev) => {
 });
 
 tasksContainer.addEventListener("click", (ev) => {
-    changeStatus(ev);
+    const target = ev.target;
+    toggleDoneStatus(target);
     
-    if (ev.target.classList.contains("btn-edit")) {
-        const btn = ev.target; 
-        const task = btn.closest(".task");
+    if (target.classList.contains("btn-edit")) {
+        const task = getTaskElement(target);
         
-        if (task.classList.contains("done")) return;
-        
-        const isEditing = btn.textContent === "Salvar";
-        if (isEditing) {
-            const input = task.querySelector(".edit-title");
-            const newTitle = input.value.trim();
-
-            if (input && newTitle !== "") {
-                const span = document.createElement("span");
-                span.classList.add("task-title");
-                span.textContent = newTitle;
-                task.replaceChild(span, input);
-
-                const id = task.dataset.id;
-                const description = span.title;
-                const done = task.classList.contains("done");
-
-                updateTask(id, { title: newTitle, description, done });
-            }
-            btn.textContent = "Editar";
-        } else {
-            const span = task.querySelector(".task-title");
-
-            const input = document.createElement("input");
-            input.classList.add("edit-title");
-            input.type = "text";
-            input.value = span.textContent;
-
-            task.replaceChild(input, span);
-            btn.textContent = "Salvar";
+        if (!task.classList.contains("done")) {
+            toggleEditMode(task, target);
         }
     }
 
-    if (ev.target.classList.contains("task-title")) {
-        const span = ev.target;
-        const divTask = span.closest(".task");
-        const existingDescription = divTask.querySelector(".task-description");
-        
-        if (existingDescription) {
-            existingDescription.remove(); 
-            return;
-        }
-
-        const description = document.createElement("p");
-        description.classList.add("task-description");
-        description.textContent = span.title;
-        divTask.appendChild(description);
+    if (target.classList.contains("task-title")) {
+        toggleDescription(target);
     }
+
 });
 
+function getTaskElement(button) {
+    return button.closest(".task");
+}
+
+function getTaskId(task) {
+    return task.dataset.id;
+}
+
+function createElement(tag, className, textContent = '', attributes = {}) {
+    const el = document.createElement(tag);
+    if (className) el.classList.add(className);
+    if (textContent) el.textContent = textContent;
+    for (const attr in attributes) {
+        el.setAttribute(attr, attributes[attr]);
+    }
+    return el;
+}
+
 function renderTask(id, title, description, done) {
-    const task = document.createElement("div");
-    task.classList.add("task");
+    const task = createElement("div", "task");
     task.dataset.id = id;
     if(done) task.classList.add("done");
     
-    const spanTitle = document.createElement("span");
-    spanTitle.classList.add("task-title");
-    spanTitle.textContent = title;
-    spanTitle.title = description;
+    const spanTitle = createElement("span", "task-title", title, {title: description});
     task.appendChild(spanTitle);
     
-    const completeBtn = document.createElement("button");
-    completeBtn.classList.add("btn-complete");
-    completeBtn.textContent = done ? "Desfazer" : "Concluir";
+    const completeBtn = createElement("button", "btn-complete", done ? "Desfazer" : "Concluir");
+    const editBtn = createElement("button", "btn-edit", "Editar");
+    const deleteBtn = createElement("button", "btn-delete", "Deletar");
+    
     task.appendChild(completeBtn);
-    
-    const editBtn = document.createElement("button");
-    editBtn.classList.add("btn-edit");
-    editBtn.textContent = "Editar";
     task.appendChild(editBtn);
-    
-    const deleteBtn = document.createElement("button");
-    deleteBtn.classList.add("btn-delete");
-    deleteBtn.textContent = "Deletar";
     task.appendChild(deleteBtn);
-
-    const container = document.getElementById("tasks-container");
-    container.appendChild(task);
-
+    
+    tasksContainer.appendChild(task);
     return task;
 }
 
-function changeStatus(event) {
-    if (event.target.classList.contains("btn-complete")) {
-        const task = event.target.closest(".task");
+function toggleDoneStatus(target) {
+    const task = getTaskElement(target);
+
+    if(!target) return;
+
+    if (target.classList.contains("btn-complete")) {
         task.classList.toggle("done");
         const done = task.classList.contains("done");
-        event.target.textContent = done ? "Desfazer" : "Concluir";
-        updateTask(task.dataset.id, {done})
+        target.textContent = done ? "Desfazer" : "Concluir";
+        updateTask(getTaskId(task), { done })
     }
     
-    if (event.target.classList.contains("btn-delete")) {
-        const task = event.target.closest(".task");
+    if (target.classList.contains("btn-delete")) {
         task.remove();
-        deleteTask(task.dataset.id);
+        deleteTask(getTaskId(task));
     }
-    
-    return;
 }
+
+function toggleEditMode(task, btn) {
+    const isEditing = btn.textContent === "Salvar";
+
+    if (isEditing) {
+        const input = task.querySelector(".edit-title");
+        const newTitle = input.value.trim();
+        if (input && newTitle !== "") {
+            const span = createElement("span", "task-title", newTitle, { title: input.title || "" });
+            task.replaceChild(span, input);
+
+            updateTask(getTaskId(task), {
+                title: newTitle,
+                description: span.title,
+                done: task.classList.contains("done")
+            });
+        }
+        btn.textContent = "Editar";
+    } else {
+        const span = task.querySelector(".task-title");
+        const input = createElement("input", "edit-title", '', {
+            type: "text",
+            value: span.textContent
+        });
+        input.title = span.title;
+        task.replaceChild(input, span);
+        btn.textContent = "Salvar";
+    }
+}
+
+function toggleDescription(span) {
+    const task = getTaskElement(span);
+    const existing = task.querySelector(".task-description");
+    if (existing) {
+        existing.remove();
+        return;
+    }
+
+    const desc = createElement("p", "task-description", span.title);
+    task.appendChild(desc);
+}
+
 
 async function loadTasks() {
     const response = await fetch('http://localhost:3000/tasks');
@@ -149,7 +157,7 @@ async function addTask(title, description) {
     });
 
     if (response.ok) {
-        loadTasks(); // recarrega lista
+        loadTasks();
     } else {
         alert('Erro ao criar tarefa');
     }
