@@ -11,8 +11,7 @@ form.addEventListener("submit", (ev) => {
         alert("Titulo vazio!");
         return;
     }
-
-    createTask(titleInput, descriptionInput);
+    addTask(titleInput.value, descriptionInput.value);
 });
 
 tasksContainer.addEventListener("click", (ev) => {
@@ -34,6 +33,12 @@ tasksContainer.addEventListener("click", (ev) => {
                 span.classList.add("task-title");
                 span.textContent = newTitle;
                 task.replaceChild(span, input);
+
+                const id = task.dataset.id;
+                const description = span.title;
+                const done = task.classList.contains("done");
+
+                updateTask(id, { title: newTitle, description, done });
             }
             btn.textContent = "Editar";
         } else {
@@ -66,19 +71,21 @@ tasksContainer.addEventListener("click", (ev) => {
     }
 });
 
-function createTask(title, description) {
+function renderTask(id, title, description, done) {
     const task = document.createElement("div");
     task.classList.add("task");
+    task.dataset.id = id;
+    if(done) task.classList.add("done");
     
     const spanTitle = document.createElement("span");
     spanTitle.classList.add("task-title");
-    spanTitle.textContent = title.value;
-    spanTitle.title = description.value;
+    spanTitle.textContent = title;
+    spanTitle.title = description;
     task.appendChild(spanTitle);
     
     const completeBtn = document.createElement("button");
     completeBtn.classList.add("btn-complete");
-    completeBtn.textContent = "Concluir";
+    completeBtn.textContent = done ? "Desfazer" : "Concluir";
     task.appendChild(completeBtn);
     
     const editBtn = document.createElement("button");
@@ -94,9 +101,6 @@ function createTask(title, description) {
     const container = document.getElementById("tasks-container");
     container.appendChild(task);
 
-    title.value = "";
-    description.value = "";
-
     return task;
 }
 
@@ -104,13 +108,77 @@ function changeStatus(event) {
     if (event.target.classList.contains("btn-complete")) {
         const task = event.target.closest(".task");
         task.classList.toggle("done");
-        event.target.textContent = task.classList.contains("done") ? "Desfazer" : "Concluir";
+        const done = task.classList.contains("done");
+        event.target.textContent = done ? "Desfazer" : "Concluir";
+        updateTask(task.dataset.id, {done})
     }
     
     if (event.target.classList.contains("btn-delete")) {
         const task = event.target.closest(".task");
         task.remove();
+        deleteTask(task.dataset.id);
     }
     
     return;
+}
+
+async function loadTasks() {
+    const response = await fetch('http://localhost:3000/tasks');
+    const tasks = await response.json();
+
+    const container = document.getElementById('tasks-container');
+    container.innerHTML = '';
+
+    for (const task of tasks) {
+        renderTask(task.id, task.title, task.description, task.done);
+    }
+}
+loadTasks();
+
+async function addTask(title, description) {
+    const response = await fetch('http://localhost:3000/tasks', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            title,
+            description,
+            done: false
+        })
+    });
+
+    if (response.ok) {
+        loadTasks(); // recarrega lista
+    } else {
+        alert('Erro ao criar tarefa');
+    }
+}
+
+async function updateTask(id, updateData) {
+    const response = await fetch(`http://localhost:3000/tasks/${id}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updateData)
+    });
+
+    if(response.ok){
+        loadTasks();
+    } else {
+        alert("Erro ao atualizar tarefa");
+    }
+}
+
+async function deleteTask(id) {
+    const response = await fetch(`http://localhost:3000/tasks/${id}`, {
+        method: 'DELETE'
+    });
+
+    if (response.ok) {
+        loadTasks();
+    } else {
+        alert("Erro ao deletar tarefa");
+    }
 }
