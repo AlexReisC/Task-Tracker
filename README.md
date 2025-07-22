@@ -17,17 +17,18 @@ Task Tracker é um mini sistema de gerenciamento de tarefas que permite aos usu�
 ## API
 A API do Task Tracker permite a interação com as tarefas através de requisições HTTP. As principais rotas disponíveis são:
 
-### Tarefas
+### Rotas
 - `GET /tasks`: Lista todas as tarefas
 - `POST /tasks`: Cria uma nova tarefa
-- `PUT /tasks/:id`: Atualiza uma tarefa existente
+- `PATCH /tasks/:id`: Atualiza uma tarefa existente
 - `DELETE /tasks/:id`: Deleta uma tarefa
 
-### Exemplo de Requisição
+### Exemplo de Requisição POST
 ```json
 {
   "title": "Nova Tarefa",
   "description": "Descrição da nova tarefa",
+  "done": false
 }
 ```
 ### Exemplo de Resposta 
@@ -39,3 +40,38 @@ A API do Task Tracker permite a interação com as tarefas através de requisiç
   "completed": false
 }
 ```
+
+### Exemplo de Requisição PATCH
+```json
+{
+  "title": "Tarefa Atualizada"
+}
+```
+### Exemplo de Resposta de sucesso 
+```http
+HTTP/1.1 204 No Content
+```
+
+### Exemplo de Resposta de erro
+```json
+{
+  "message": "Tarefa não encontrada"
+}
+```
+
+## Instalação
+Para instalar o Task Tracker, siga os passos abaixo:
+1. Clone o repositório: `git clone https://github.com/AlexReisC/Task-Tracker.git`
+2. Navegue até o diretório do projeto: `cd Task-Tracker`
+3. Navegue até o diretório `backend` e instale as dependências: `npm install`
+4. Inicie o servidor: `npm run dev`
+5.  Abra o navegador e acesse `http://localhost:3000`
+6. Comece a gerenciar suas tarefas!
+
+## Como Contribuir
+Para contribuir com o Task Tracker, siga os passos abaixo:
+1. Faça um fork do repositório
+3. Faça suas alterações e commit (`git commit -m 'Adiciona nova feature'`). Explique claramente o que foi alterado.
+4. Envie para o repositório remoto (`git push origin feature/nova-feature`)
+5. Crie um Pull Request
+6. Aguarde a revisão e aprovação do Pull Request
