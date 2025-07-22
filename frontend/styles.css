@@ -118,7 +118,7 @@ main {
     cursor: pointer;
 }
 
-.task.done .task-title {
+.task.done .task-title, .task.done .task-description {
     text-decoration: line-through;
     opacity: 0.6;
 }
