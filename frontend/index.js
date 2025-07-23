@@ -17,19 +17,22 @@ form.addEventListener("submit", (ev) => {
 tasksContainer.addEventListener("click", (ev) => {
     const target = ev.target;
     toggleDoneStatus(target);
+
+    const task = getTaskElement(target);
     
-    if (target.classList.contains("btn-edit")) {
-        const task = getTaskElement(target);
-        
-        if (!task.classList.contains("done")) {
-            toggleEditMode(task, target);
-        }
+    switch (target.getAttribute("class")) {
+        case "btn-edit":
+            if (!task.classList.contains("done")) {
+                toggleEditMode(task, target);
+            }
+            break;
+        case "task-title":
+            displayDescription(target);
+            break;
+        case "btn-delete":
+            deleteTask(getTaskId(task)) === true ? task.remove() : '';
+            break;
     }
-
-    if (target.classList.contains("task-title")) {
-        toggleDescription(target);
-    }
-
 });
 
 function getTaskElement(button) {
@@ -72,19 +75,15 @@ function renderTask(id, title, description, done) {
 
 function toggleDoneStatus(target) {
     const task = getTaskElement(target);
+    const btnEdit = task.querySelector(".btn-edit");
 
-    if(!target) return;
+    if(!task || btnEdit.textContent == "Salvar") return;
 
     if (target.classList.contains("btn-complete")) {
         task.classList.toggle("done");
         const done = task.classList.contains("done");
         target.textContent = done ? "Desfazer" : "Concluir";
         updateTask(getTaskId(task), { done })
-    }
-    
-    if (target.classList.contains("btn-delete")) {
-        task.remove();
-        deleteTask(getTaskId(task));
     }
 }
 
@@ -117,7 +116,7 @@ function toggleEditMode(task, btn) {
     }
 }
 
-function toggleDescription(span) {
+function displayDescription(span) {
     const task = getTaskElement(span);
     const existing = task.querySelector(".task-description");
     if (existing) {
@@ -141,7 +140,6 @@ async function loadTasks() {
         renderTask(task.id, task.title, task.description, task.done);
     }
 }
-loadTasks();
 
 async function addTask(title, description) {
     const response = await fetch('http://localhost:3000/tasks', {
@@ -156,9 +154,7 @@ async function addTask(title, description) {
         })
     });
 
-    if (response.ok) {
-        loadTasks();
-    } else {
+    if (!response.ok) {
         alert('Erro ao criar tarefa');
     }
 }
@@ -172,9 +168,7 @@ async function updateTask(id, updateData) {
         body: JSON.stringify(updateData)
     });
 
-    if(response.ok){
-        loadTasks();
-    } else {
+    if(!response.ok){
         alert("Erro ao atualizar tarefa");
     }
 }
@@ -185,8 +179,10 @@ async function deleteTask(id) {
     });
 
     if (response.ok) {
-        loadTasks();
+        return true;
     } else {
         alert("Erro ao deletar tarefa");
     }
 }
+
+loadTasks();
