@@ -1,5 +1,8 @@
 # Task Tracker
-Task Tracker é um mini sistema de gerenciamento de tarefas que permite aos usuários gerenciar suas tarefas de forma simples e eficiente.
+Task Tracker é um mini sistema de gerenciamento de tarefas que permite aos usuários gerenciar suas tarefas de 
+forma simples e eficiente.
+
+![Local Image](./frontend/assests/Captura%20de%20tela%202025-08-12%20142059.png "Task Tracker")
 
 ## Funcionalidades
 - Criação de tarefas com título e descrição
