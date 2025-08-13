@@ -10,12 +10,12 @@ forma simples e eficiente.
 - Marcação de tarefas como concluídas
 - Editar tarefas
 - Deleção de tarefas
-- Persistência de dados em um arquivo JSON (Em desenvolvimento)
+- Persistência de dados em um arquivo JSON
 
 ## Tecnologias Utilizadas
 - Frontend: JavaScript, HTML, CSS
-- Backend: Node.js, Express (Em desenvolvimento)
-- Banco de Dados: JSON (Em desenvolvimento)
+- Backend: Node.js, Fastify
+- Banco de Dados: JSON local//
 
 ## API
 A API do Task Tracker permite a interação com as tarefas através de requisições HTTP. As principais rotas disponíveis são:
@@ -62,12 +62,12 @@ HTTP/1.1 204 No Content
 }
 ```
 
-## Instalação
+## Instalação e Execução
 Para instalar o Task Tracker, siga os passos abaixo:
 1. Clone o repositório: `git clone https://github.com/AlexReisC/Task-Tracker.git`
 2. Navegue até o diretório do projeto: `cd Task-Tracker`
 3. Navegue até o diretório `backend` e instale as dependências: `npm install`
-4. Inicie o servidor: `npm run dev`
+4. Inicie o servidor: `npm start`
 5.  Abra o navegador e acesse `http://localhost:3000`
 6. Comece a gerenciar suas tarefas!
 
